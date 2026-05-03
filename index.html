@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Expense Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --green: #00e5a0;
+  --blue: #4d7cfe;
+  --amber: #ffb347;
+}
+
+html, body { height: 100%; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── ANIMATED GRADIENT BG ── */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #050510;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+}
+.orb-1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, #0d47a1 0%, #1565c0 40%, transparent 70%);
+  top: -200px; left: -200px;
+  opacity: 0.55;
+  animation: drift1 18s ease-in-out infinite;
+}
+.orb-2 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #00695c 0%, #00897b 40%, transparent 70%);
+  bottom: -150px; right: -150px;
+  opacity: 0.55;
+  animation: drift2 22s ease-in-out infinite;
+}
+.orb-3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, #4a148c 0%, #6a1b9a 40%, transparent 70%);
+  top: 40%; left: 30%;
+  opacity: 0.55;
+  animation: drift3 15s ease-in-out infinite;
+}
+.orb-4 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, #e65100 0%, #ef6c00 40%, transparent 70%);
+  top: 10%; right: 10%;
+  opacity: 0.3;
+  animation: drift4 20s ease-in-out infinite;
+}
+
+@keyframes drift1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(120px, 80px) scale(1.1); }
+  66%  { transform: translate(60px, 160px) scale(0.95); }
+}
+@keyframes drift2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%  { transform: translate(-100px,-70px) scale(1.08); }
+  66%  { transform: translate(-50px,-130px) scale(0.97); }
+}
+@keyframes drift3 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-80px, 60px) scale(1.15); }
+}
+@keyframes drift4 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(60px, 90px) scale(1.1); }
+}
+
+.mesh {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(77,124,254,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(0,229,160,0.10) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 50% 80%, rgba(255,179,71,0.07) 0%, transparent 60%);
+}
+
+.grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.shimmer-line {
+  position: fixed;
+  top: 0; left: -100%;
+  width: 60%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  z-index: 1;
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%   { left: -60%; top: 30%; }
+  50%  { left: 120%; top: 60%; }
+  100% { left: -60%; top: 30%; }
+}
+
+/* ── TITLE ── */
+.title-wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.7s ease both;
+}
+.title-wrap h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1.1;
+}
+.title-wrap h1 span {
+  background: linear-gradient(90deg, var(--green), var(--blue), var(--amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200%;
+  animation: gradShift 4s linear infinite alternate;
+}
+@keyframes gradShift {
+  from { background-position: 0%; }
+  to   { background-position: 100%; }
+}
+.title-wrap p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.35);
+  font-weight: 300;
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── CARDS ── */
+.cards {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 1.5rem;
+  animation: fadeUp 0.7s 0.1s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 200px;
+  height: 220px;
+  border-radius: 28px;
+  text-decoration: none;
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 80%; height: 100%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+  transition: left 0.5s ease;
+}
+.card:hover::before { left: 140%; }
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+}
+
+.card-sheet {
+  background: rgba(0, 20, 12, 0.65);
+  border: 1px solid rgba(0,229,160,0.25);
+  color: var(--green);
+  box-shadow: 0 0 50px rgba(0,229,160,0.1), inset 0 1px 0 rgba(0,229,160,0.1);
+}
+.card-sheet:hover {
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 0 80px rgba(0,229,160,0.25), 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(0,229,160,0.2);
+}
+
+.card-form {
+  background: rgba(0, 8, 28, 0.65);
+  border: 1px solid rgba(77,124,254,0.25);
+  color: var(--blue);
+  box-shadow: 0 0 50px rgba(77,124,254,0.1), inset 0 1px 0 rgba(77,124,254,0.1);
+}
+.card-form:hover {
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 0 80px rgba(77,124,254,0.25), 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(77,124,254,0.2);
+}
+
+.lottie-wrap {
+  width: 110px;
+  height: 110px;
+  pointer-events: none;
+  margin-bottom: -8px;
+}
+
+.card-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.5rem;
+}
+
+/* ── COUNTDOWN ── */
+.countdown {
+  position: fixed;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 999px;
+  padding: 0.5rem 1.25rem;
+  backdrop-filter: blur(10px);
+  animation: fadeUp 0.7s 0.3s ease both;
+  white-space: nowrap;
+}
+.countdown-text {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.04em;
+}
+.countdown-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--blue);
+  min-width: 1ch;
+  text-align: center;
+}
+.progress-ring { width: 24px; height: 24px; flex-shrink: 0; }
+.ring-bg { stroke: rgba(255,255,255,0.08); }
+.ring-fill {
+  stroke: var(--blue);
+  stroke-linecap: round;
+  transform-origin: center;
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 1s linear;
+}
+
+@media(max-width: 500px) {
+  .cards { flex-direction: column; gap: 1rem; }
+  .card { width: 170px; height: 190px; }
+  .lottie-wrap { width: 90px; height: 90px; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="orb orb-4"></div>
+</div>
+<div class="mesh"></div>
+<div class="grid"></div>
+<div class="shimmer-line"></div>
+
+<div class="title-wrap">
+  <h1>Expense <span>Portal</span></h1>
+  <p>Where do you want to go?</p>
+</div>
+
+<div class="cards">
+  <a class="card card-sheet" href="https://docs.google.com/spreadsheets/d/10qXtTlrbBi-6mzmLhn6qVxwQUNS1ZPNTFoBrIiFnEBk/edit?usp=sharing" target="_blank" id="btn-sheet">
+    <div class="lottie-wrap" id="lottie-sheet"></div>
+    <div class="card-label">Expense Sheet</div>
+  </a>
+
+  <a class="card card-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeBAWrR_GSkn590ezy9FnsdG26WGBK0bOXcriKmsqXhW-up1Q/viewform" target="_blank" id="btn-form">
+    <div class="lottie-wrap" id="lottie-form"></div>
+    <div class="card-label">Expense Form</div>
+  </a>
+</div>
+
+<div class="countdown">
+  <svg class="progress-ring" viewBox="0 0 24 24">
+    <circle class="ring-bg" cx="12" cy="12" r="10" fill="none" stroke-width="2"/>
+    <circle class="ring-fill" id="ring" cx="12" cy="12" r="10" fill="none" stroke-width="2"
+      stroke-dasharray="62.83" stroke-dashoffset="0"/>
+  </svg>
+  <span class="countdown-text">Redirecting to form in</span>
+  <span class="countdown-num" id="t">3</span>
+  <span class="countdown-text">s</span>
+</div>
+
+<script>
+// Lottie — bar chart for sheet
+lottie.loadAnimation({
+  container: document.getElementById('lottie-sheet'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: 'https://assets10.lottiefiles.com/packages/lf20_qp1q7mct.json'
+});
+
+// Lottie — checklist for form
+lottie.loadAnimation({
+  container: document.getElementById('lottie-form'),
+  renderer: 'svg',
+  loop: true,
+  autoplay: true,
+  path: 'https://assets4.lottiefiles.com/packages/lf20_jvlfso1t.json'
+});
+
+// Countdown
+const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeBAWrR_GSkn590ezy9FnsdG26WGBK0bOXcriKmsqXhW-up1Q/viewform";
+const TOTAL = 3;
+let n = TOTAL;
+const el = document.getElementById('t');
+const ring = document.getElementById('ring');
+const C = 62.83;
+
+ring.style.strokeDashoffset = 0;
+
+const timer = setInterval(() => {
+  n--;
+  el.textContent = n;
+  ring.style.strokeDashoffset = C * (1 - n / TOTAL);
+  if (n <= 0) { clearInterval(timer); window.location.href = formUrl; }
+}, 1000);
+
+document.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => clearInterval(timer))
+);
+</script>
+</body>
+</html>
