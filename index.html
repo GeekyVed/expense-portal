@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#050510"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Expense Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -15,88 +17,90 @@
   --amber: #ffb347;
 }
 
-html, body { height: 100%; }
+html {
+  height: 100%;
+  background: #050510;
+}
 
 body {
   font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
+  /* safe area for notch/status bar */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  background: #050510;
 }
 
-/* ── ANIMATED GRADIENT BG ── */
+/* ── BACKGROUND ── */
 .bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   background: #050510;
+  /* extend behind status bar */
+  top: -60px;
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(90px);
+  filter: blur(80px);
 }
 .orb-1 {
-  width: 700px; height: 700px;
-  background: radial-gradient(circle, #0d47a1 0%, #1565c0 40%, transparent 70%);
-  top: -200px; left: -200px;
-  opacity: 0.55;
+  width: 650px; height: 650px;
+  background: radial-gradient(circle, #0d47a1 0%, #1565c0 50%, transparent 70%);
+  top: -180px; left: -180px;
+  opacity: 0.6;
   animation: drift1 18s ease-in-out infinite;
 }
 .orb-2 {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, #00695c 0%, #00897b 40%, transparent 70%);
-  bottom: -150px; right: -150px;
-  opacity: 0.55;
+  width: 550px; height: 550px;
+  background: radial-gradient(circle, #00695c 0%, #00897b 50%, transparent 70%);
+  bottom: -120px; right: -120px;
+  opacity: 0.6;
   animation: drift2 22s ease-in-out infinite;
 }
 .orb-3 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, #4a148c 0%, #6a1b9a 40%, transparent 70%);
-  top: 40%; left: 30%;
-  opacity: 0.55;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, #4a148c 0%, #7b1fa2 50%, transparent 70%);
+  top: 40%; left: 28%;
+  opacity: 0.5;
   animation: drift3 15s ease-in-out infinite;
 }
 .orb-4 {
-  width: 350px; height: 350px;
-  background: radial-gradient(circle, #e65100 0%, #ef6c00 40%, transparent 70%);
-  top: 10%; right: 10%;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, #bf360c 0%, #e64a19 50%, transparent 70%);
+  top: 5%; right: 5%;
   opacity: 0.3;
   animation: drift4 20s ease-in-out infinite;
 }
 
 @keyframes drift1 {
   0%,100% { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(120px, 80px) scale(1.1); }
-  66%  { transform: translate(60px, 160px) scale(0.95); }
+  33%  { transform: translate(100px, 70px) scale(1.1); }
+  66%  { transform: translate(50px, 140px) scale(0.95); }
 }
 @keyframes drift2 {
   0%,100% { transform: translate(0,0) scale(1); }
-  33%  { transform: translate(-100px,-70px) scale(1.08); }
-  66%  { transform: translate(-50px,-130px) scale(0.97); }
+  33%  { transform: translate(-90px,-60px) scale(1.08); }
+  66%  { transform: translate(-40px,-110px) scale(0.97); }
 }
 @keyframes drift3 {
   0%,100% { transform: translate(0,0) scale(1); }
-  50%  { transform: translate(-80px, 60px) scale(1.15); }
+  50%  { transform: translate(-70px, 55px) scale(1.15); }
 }
 @keyframes drift4 {
   0%,100% { transform: translate(0,0) scale(1); }
-  50%  { transform: translate(60px, 90px) scale(1.1); }
-}
-
-.mesh {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 50%, rgba(77,124,254,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(0,229,160,0.10) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 50% 80%, rgba(255,179,71,0.07) 0%, transparent 60%);
+  50%  { transform: translate(50px, 80px) scale(1.1); }
 }
 
 .grid {
@@ -104,23 +108,22 @@ body {
   inset: 0;
   z-index: 0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 55px 55px;
 }
 
-.shimmer-line {
+.shimmer {
   position: fixed;
-  top: 0; left: -100%;
-  width: 60%; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  width: 55%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
   z-index: 1;
-  animation: shimmer 6s ease-in-out infinite;
+  animation: sweep 7s ease-in-out infinite;
 }
-@keyframes shimmer {
-  0%   { left: -60%; top: 30%; }
-  50%  { left: 120%; top: 60%; }
-  100% { left: -60%; top: 30%; }
+@keyframes sweep {
+  0%   { top: 20%; left: -60%; }
+  50%  { top: 70%; left: 110%; }
+  100% { top: 20%; left: -60%; }
 }
 
 /* ── TITLE ── */
@@ -128,35 +131,41 @@ body {
   position: relative;
   z-index: 2;
   text-align: center;
-  margin-bottom: 2.5rem;
-  animation: fadeUp 0.7s ease both;
+  margin-bottom: 2.2rem;
+  animation: fadeUp 0.6s ease both;
 }
 .title-wrap h1 {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-size: clamp(1.7rem, 5vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   color: #fff;
-  line-height: 1.1;
 }
-.title-wrap h1 span {
-  background: linear-gradient(90deg, var(--green), var(--blue), var(--amber));
+.title-wrap h1 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--green) 0%, var(--blue) 50%, var(--amber) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   background-size: 200%;
-  animation: gradShift 4s linear infinite alternate;
+  animation: gradShift 5s linear infinite alternate;
 }
 @keyframes gradShift {
   from { background-position: 0%; }
   to   { background-position: 100%; }
 }
 .title-wrap p {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.35);
-  font-weight: 300;
   margin-top: 0.4rem;
-  letter-spacing: 0.04em;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.3);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ── CARDS ── */
@@ -164,216 +173,356 @@ body {
   position: relative;
   z-index: 2;
   display: flex;
-  gap: 1.5rem;
-  animation: fadeUp 0.7s 0.1s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  gap: 1.25rem;
+  animation: fadeUp 0.6s 0.12s ease both;
 }
 
 .card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  width: 200px;
-  height: 220px;
+  justify-content: flex-end;
+  padding-bottom: 1.5rem;
+  gap: 0.5rem;
+  width: 185px;
+  height: 210px;
   border-radius: 28px;
   text-decoration: none;
   font-family: 'Syne', sans-serif;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.02em;
   position: relative;
   overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  cursor: pointer;
+  /* tap highlight off on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
-.card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 80%; height: 100%;
-  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
-  transition: left 0.5s ease;
-}
-.card:hover::before { left: 140%; }
-
+/* inner top highlight */
 .card::after {
   content: '';
   position: absolute;
-  top: 0; left: 10%; right: 10%;
+  top: 0; left: 12%; right: 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  border-radius: 999px;
 }
 
+/* swipe shimmer on hover */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 70%; height: 100%;
+  background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.07) 50%, transparent 65%);
+  transition: left 0.55s ease;
+}
+.card:hover::before, .card:active::before { left: 150%; }
+
 .card-sheet {
-  background: rgba(0, 20, 12, 0.65);
-  border: 1px solid rgba(0,229,160,0.25);
+  background: rgba(0, 18, 10, 0.7);
+  border: 1px solid rgba(0,229,160,0.22);
   color: var(--green);
-  box-shadow: 0 0 50px rgba(0,229,160,0.1), inset 0 1px 0 rgba(0,229,160,0.1);
+  box-shadow: 0 0 45px rgba(0,229,160,0.08);
 }
 .card-sheet:hover {
   transform: translateY(-10px) scale(1.04);
-  box-shadow: 0 0 80px rgba(0,229,160,0.25), 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(0,229,160,0.2);
+  box-shadow: 0 0 80px rgba(0,229,160,0.22), 0 28px 55px rgba(0,0,0,0.55);
 }
 
 .card-form {
-  background: rgba(0, 8, 28, 0.65);
-  border: 1px solid rgba(77,124,254,0.25);
+  background: rgba(0, 6, 26, 0.7);
+  border: 1px solid rgba(77,124,254,0.22);
   color: var(--blue);
-  box-shadow: 0 0 50px rgba(77,124,254,0.1), inset 0 1px 0 rgba(77,124,254,0.1);
+  box-shadow: 0 0 45px rgba(77,124,254,0.08);
 }
 .card-form:hover {
   transform: translateY(-10px) scale(1.04);
-  box-shadow: 0 0 80px rgba(77,124,254,0.25), 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(77,124,254,0.2);
+  box-shadow: 0 0 80px rgba(77,124,254,0.22), 0 28px 55px rgba(0,0,0,0.55);
 }
 
-.lottie-wrap {
-  width: 110px;
-  height: 110px;
-  pointer-events: none;
-  margin-bottom: -8px;
+/* active press on mobile */
+.card:active { transform: scale(0.97); }
+
+/* ── SVG ICON AREA ── */
+.icon-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
+
+/* ── SHEET ICON: animated bar chart ── */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 64px;
+}
+.bar {
+  width: 14px;
+  border-radius: 4px 4px 2px 2px;
+  background: var(--green);
+  opacity: 0.85;
+  transform-origin: bottom;
+  animation: barGrow 2s ease-in-out infinite alternate;
+}
+.bar:nth-child(1) { height: 30%; animation-delay: 0s;    opacity: 0.4; }
+.bar:nth-child(2) { height: 65%; animation-delay: 0.15s; opacity: 0.6; }
+.bar:nth-child(3) { height: 90%; animation-delay: 0.3s;  opacity: 0.85;}
+.bar:nth-child(4) { height: 50%; animation-delay: 0.45s; opacity: 0.5; }
+.bar:nth-child(5) { height: 75%; animation-delay: 0.6s;  opacity: 0.7; }
+
+@keyframes barGrow {
+  0%   { transform: scaleY(0.6); }
+  100% { transform: scaleY(1); }
+}
+
+/* ── FORM ICON: animated checklist ── */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: rowSlide 0.5s ease both;
+}
+.check-row:nth-child(1) { animation-delay: 0s; }
+.check-row:nth-child(2) { animation-delay: 0.6s; }
+.check-row:nth-child(3) { animation-delay: 1.2s; }
+@keyframes rowSlide {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.check-box {
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  border: 2px solid var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: rgba(77,124,254,0.15);
+}
+.check-tick {
+  opacity: 0;
+  animation: tickPop 0.3s ease forwards;
+}
+.check-row:nth-child(1) .check-tick { animation-delay: 0.3s; }
+.check-row:nth-child(2) .check-tick { animation-delay: 0.9s; }
+.check-row:nth-child(3) .check-tick { animation-delay: 1.5s; }
+@keyframes tickPop {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.check-line {
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(77,124,254,0.35);
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.check-line::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: var(--blue);
+  border-radius: 999px;
+  animation: lineFill 0.4s ease forwards;
+}
+.check-row:nth-child(1) .check-line::after { animation-delay: 0.3s;  width: 80%; }
+.check-row:nth-child(2) .check-line::after { animation-delay: 0.9s;  width: 60%; }
+.check-row:nth-child(3) .check-line::after { animation-delay: 1.5s;  width: 90%; }
+@keyframes lineFill {
+  from { left: -100%; }
+  to   { left: 0; }
+}
+
+/* loop the whole checklist animation */
+.checklist { animation: restartChecklist 3.6s linear infinite; }
+@keyframes restartChecklist {
+  0%, 95% { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
+.check-row { animation-iteration-count: infinite; animation-duration: 3.6s; }
+.check-tick { animation-iteration-count: infinite; animation-duration: 3.6s; }
+.check-line::after { animation-iteration-count: infinite; animation-duration: 3.6s; }
 
 .card-label {
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  padding-bottom: 0.5rem;
+  text-align: center;
+}
+.card-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  opacity: 0.5;
+  letter-spacing: 0.03em;
 }
 
 /* ── COUNTDOWN ── */
 .countdown {
   position: fixed;
-  bottom: 2.5rem;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  background: rgba(255,255,255,0.04);
+  gap: 0.4rem;
+  background: rgba(10,10,20,0.75);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 999px;
-  padding: 0.5rem 1.25rem;
-  backdrop-filter: blur(10px);
-  animation: fadeUp 0.7s 0.3s ease both;
+  padding: 0.4rem 0.9rem 0.4rem 0.6rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   white-space: nowrap;
+  max-width: calc(100vw - 2rem);
+  animation: fadeUp 0.6s 0.25s ease both;
 }
-.countdown-text {
-  font-size: 0.82rem;
-  color: rgba(255,255,255,0.4);
-  letter-spacing: 0.04em;
+.ring-svg { width: 20px; height: 20px; flex-shrink: 0; }
+.ring-bg  { stroke: rgba(255,255,255,0.07); }
+.ring-fg  {
+  stroke: var(--blue);
+  stroke-linecap: round;
+  transform-origin: 50% 50%;
+  transform: rotate(-90deg);
+  transition: stroke-dashoffset 1s linear;
 }
-.countdown-num {
+.cd-text  { font-size: 0.75rem; color: rgba(255,255,255,0.35); letter-spacing: 0.02em; }
+.cd-num   {
   font-family: 'Syne', sans-serif;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: var(--blue);
   min-width: 1ch;
   text-align: center;
 }
-.progress-ring { width: 24px; height: 24px; flex-shrink: 0; }
-.ring-bg { stroke: rgba(255,255,255,0.08); }
-.ring-fill {
-  stroke: var(--blue);
-  stroke-linecap: round;
-  transform-origin: center;
-  transform: rotate(-90deg);
-  transition: stroke-dashoffset 1s linear;
-}
 
-@media(max-width: 500px) {
+/* ── MOBILE ── */
+@media (max-width: 480px) {
   .cards { flex-direction: column; gap: 1rem; }
-  .card { width: 170px; height: 190px; }
-  .lottie-wrap { width: 90px; height: 90px; }
+  .card  { width: 200px; height: 195px; }
+  .chart { height: 56px; }
+  .bar   { width: 12px; }
 }
 </style>
 </head>
 <body>
 
+<!-- BG -->
 <div class="bg">
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
   <div class="orb orb-4"></div>
 </div>
-<div class="mesh"></div>
 <div class="grid"></div>
-<div class="shimmer-line"></div>
+<div class="shimmer"></div>
 
+<!-- TITLE -->
 <div class="title-wrap">
-  <h1>Expense <span>Portal</span></h1>
-  <p>Where do you want to go?</p>
+  <h1>Expense <em>Portal</em></h1>
+  <p>Pick an action</p>
 </div>
 
+<!-- CARDS -->
 <div class="cards">
-  <a class="card card-sheet" href="https://docs.google.com/spreadsheets/d/10qXtTlrbBi-6mzmLhn6qVxwQUNS1ZPNTFoBrIiFnEBk/edit?usp=sharing" target="_blank" id="btn-sheet">
-    <div class="lottie-wrap" id="lottie-sheet"></div>
+
+  <!-- SHEET -->
+  <a class="card card-sheet"
+     href="https://docs.google.com/spreadsheets/d/10qXtTlrbBi-6mzmLhn6qVxwQUNS1ZPNTFoBrIiFnEBk/edit?usp=sharing"
+     target="_blank" rel="noopener">
+    <div class="icon-wrap">
+      <div class="chart">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
     <div class="card-label">Expense Sheet</div>
+    <div class="card-sub">View & track</div>
   </a>
 
-  <a class="card card-form" href="https://docs.google.com/forms/d/e/1FAIpQLSeBAWrR_GSkn590ezy9FnsdG26WGBK0bOXcriKmsqXhW-up1Q/viewform" target="_blank" id="btn-form">
-    <div class="lottie-wrap" id="lottie-form"></div>
+  <!-- FORM -->
+  <a class="card card-form"
+     href="https://docs.google.com/forms/d/e/1FAIpQLSeBAWrR_GSkn590ezy9FnsdG26WGBK0bOXcriKmsqXhW-up1Q/viewform"
+     target="_blank" rel="noopener">
+    <div class="icon-wrap">
+      <div class="checklist">
+        <div class="check-row">
+          <div class="check-box">
+            <svg class="check-tick" width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="#4d7cfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="check-line"></div>
+        </div>
+        <div class="check-row">
+          <div class="check-box">
+            <svg class="check-tick" width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="#4d7cfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="check-line"></div>
+        </div>
+        <div class="check-row">
+          <div class="check-box">
+            <svg class="check-tick" width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="#4d7cfe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="check-line"></div>
+        </div>
+      </div>
+    </div>
     <div class="card-label">Expense Form</div>
+    <div class="card-sub">Submit a claim</div>
   </a>
+
 </div>
 
+<!-- COUNTDOWN -->
 <div class="countdown">
-  <svg class="progress-ring" viewBox="0 0 24 24">
-    <circle class="ring-bg" cx="12" cy="12" r="10" fill="none" stroke-width="2"/>
-    <circle class="ring-fill" id="ring" cx="12" cy="12" r="10" fill="none" stroke-width="2"
-      stroke-dasharray="62.83" stroke-dashoffset="0"/>
+  <svg class="ring-svg" viewBox="0 0 22 22">
+    <circle class="ring-bg" cx="11" cy="11" r="9" fill="none" stroke-width="2"/>
+    <circle class="ring-fg" id="ring" cx="11" cy="11" r="9" fill="none" stroke-width="2"
+      stroke-dasharray="56.55" stroke-dashoffset="0"/>
   </svg>
-  <span class="countdown-text">Redirecting to form in</span>
-  <span class="countdown-num" id="t">3</span>
-  <span class="countdown-text">s</span>
+  <span class="cd-text">Opening form in</span>
+  <span class="cd-num" id="t">3</span>
+  <span class="cd-text">s</span>
 </div>
 
 <script>
-// Lottie — bar chart for sheet
-lottie.loadAnimation({
-  container: document.getElementById('lottie-sheet'),
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'https://assets10.lottiefiles.com/packages/lf20_qp1q7mct.json'
-});
-
-// Lottie — checklist for form
-lottie.loadAnimation({
-  container: document.getElementById('lottie-form'),
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  path: 'https://assets4.lottiefiles.com/packages/lf20_jvlfso1t.json'
-});
-
-// Countdown
 const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeBAWrR_GSkn590ezy9FnsdG26WGBK0bOXcriKmsqXhW-up1Q/viewform";
-const TOTAL = 3;
+const TOTAL = 3, C = 56.55;
 let n = TOTAL;
 const el = document.getElementById('t');
 const ring = document.getElementById('ring');
-const C = 62.83;
 
-ring.style.strokeDashoffset = 0;
-
-const timer = setInterval(() => {
+const tick = setInterval(() => {
   n--;
   el.textContent = n;
   ring.style.strokeDashoffset = C * (1 - n / TOTAL);
-  if (n <= 0) { clearInterval(timer); window.location.href = formUrl; }
+  if (n <= 0) { clearInterval(tick); window.location.href = formUrl; }
 }, 1000);
 
 document.querySelectorAll('a').forEach(a =>
-  a.addEventListener('click', () => clearInterval(timer))
+  a.addEventListener('click', () => clearInterval(tick))
 );
 </script>
 </body>
